@@ -17,13 +17,13 @@ void initializeGrid()
         for (int j = 0; j < GRID_SIZE; j++)
         {
             grid[i][j].setFont(font);
-            grid[i][j].setCharacterSize(24);
+            grid[i][j].setCharacterSize(25);
             grid[i][j].setFillColor(sf::Color::White);
             grid[i][j].setPosition(j * 30, i * 30);
-            // Hola
 
             char randomLetter = 'A' + rand() % 26;
             grid[i][j].setString(randomLetter);
+            // hola
         }
     }
 }
@@ -37,7 +37,7 @@ int main()
 
     initializeGrid();
 
-    sf::RenderWindow window(sf::VideoMode(GRID_SIZE * 30, GRID_SIZE * 30), "Sopa de letras");
+    sf::RenderWindow window(sf::VideoMode(GRID_SIZE * 50, GRID_SIZE * 50), "Sopa de letras");
 
     while (window.isOpen())
     {
