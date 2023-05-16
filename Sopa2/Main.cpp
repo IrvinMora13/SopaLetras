@@ -8,15 +8,19 @@ const int GRID_SIZE = 15;
 sf::Text grid[GRID_SIZE][GRID_SIZE];
 sf::Font font;
 
-void initializeGrid() {
+void initializeGrid()
+{
     srand(time(0));
 
-    for (int i = 0; i < GRID_SIZE; i++) {
-        for (int j = 0; j < GRID_SIZE; j++) {
+    for (int i = 0; i < GRID_SIZE; i++)
+    {
+        for (int j = 0; j < GRID_SIZE; j++)
+        {
             grid[i][j].setFont(font);
             grid[i][j].setCharacterSize(24);
             grid[i][j].setFillColor(sf::Color::White);
             grid[i][j].setPosition(j * 30, i * 30);
+            // Hola
 
             char randomLetter = 'A' + rand() % 26;
             grid[i][j].setString(randomLetter);
@@ -24,8 +28,10 @@ void initializeGrid() {
     }
 }
 
-int main() {
-    if (!font.loadFromFile("arial.ttf")) {
+int main()
+{
+    if (!font.loadFromFile("arial.ttf"))
+    {
         return -1;
     }
 
@@ -33,17 +39,22 @@ int main() {
 
     sf::RenderWindow window(sf::VideoMode(GRID_SIZE * 30, GRID_SIZE * 30), "Sopa de letras");
 
-    while (window.isOpen()) {
+    while (window.isOpen())
+    {
         sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+            {
                 window.close();
             }
         }
 
         window.clear();
-        for (int i = 0; i < GRID_SIZE; i++) {
-            for (int j = 0; j < GRID_SIZE; j++) {
+        for (int i = 0; i < GRID_SIZE; i++)
+        {
+            for (int j = 0; j < GRID_SIZE; j++)
+            {
                 window.draw(grid[i][j]);
             }
         }
@@ -52,4 +63,3 @@ int main() {
 
     return 0;
 }
-
