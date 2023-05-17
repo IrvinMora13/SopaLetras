@@ -1,9 +1,16 @@
 # depslib dependency file v1.0
-1684095629 source:c:\users\irbug\documents\codeblocks\sopa2\main.cpp
+1684363725 source:c:\users\irbug\documents\codeblocks\sopa2\main.cpp
+	"grid.h"
+	"fileIO.h"
+	"display.h"
 	<SFML/Graphics.hpp>
+	<SFML/Graphics/RenderWindow.hpp>
 	<ctime>
 	<cstdlib>
 	<string>
+	<iostream>
+	<vector>
+	<algorithm>
 
 1539632499 c:\users\irbug\documents\codeblocks\sopa\build\include\sfml\graphics.hpp
 	<SFML/Window.hpp>
@@ -413,4 +420,29 @@
 	<SFML/Graphics/PrimitiveType.hpp>
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
+
+1684363714 source:c:\users\irbug\documents\codeblocks\sopa2\display.cpp
+	"display.h"
+
+1684363689 c:\users\irbug\documents\codeblocks\sopa2\display.h
+	<SFML/Graphics.hpp>
+	<SFML/Graphics/RenderWindow.hpp>
+
+1684363742 source:c:\users\irbug\documents\codeblocks\sopa2\grid.cpp
+	"grid.h"
+
+1684362679 c:\users\irbug\documents\codeblocks\sopa2\grid.h
+	<SFML/Graphics.hpp>
+	<SFML/Graphics/RenderWindow.hpp>
+
+1684363606 c:\users\irbug\documents\codeblocks\sopa2\fileio.h
+	<string>
+	<vector>
+
+1684364004 source:c:\users\irbug\documents\codeblocks\sopa2\fileio.cpp
+	"fileIO.h"
+	<string>
+	<vector>
+	<fstream>
+	<iostream>
 
