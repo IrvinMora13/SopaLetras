@@ -5,6 +5,8 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 const int GRID_SIZE = 15;
@@ -39,7 +41,7 @@ int main()
         return -1;
     }
 
-    sf::RenderWindow window(sf::VideoMode(GRID_SIZE * 50, GRID_SIZE * 50), "Sopa de letras");
+    sf::RenderWindow window(sf::VideoMode(GRID_SIZE * 50, GRID_SIZE * 40), "Sopa de letras");
 
     initializeGrid(window);
     sf::RectangleShape columna1(sf::Vector2f(266, 600));
@@ -70,8 +72,61 @@ int main()
     }
 
     window.clear(sf::Color::White);
-
+/////////////////////////////////////////////////////////////////////////////////////////////////
     // Lectura de palabras desde un archivo
+
+    std::ifstream inputFile("SopaPalabras.txt");
+    if (!inputFile.is_open())
+    {
+        std::cout << "No se pudo abrir el archivo de entrada." << std::endl;
+        return -1;
+    }
+
+    std::vector<std::string> wordList;
+    std::string word;
+    while (inputFile >> word)
+    {
+        wordList.push_back(word);
+    }
+
+    // Cerrar el archivo de entrada
+    inputFile.close();
+
+    std::size_t wordCount = wordList.size();
+
+    // Verificar si hay suficientes palabras en la lista
+    if (wordCount < 5)
+    {
+        std::cout << "La lista de palabras no contiene suficientes elementos." << std::endl;
+        return -1;
+    }
+
+    // Mezclar la lista de palabras de manera aleatoria
+    std::random_shuffle(wordList.begin(), wordList.end());
+
+    // Tomar las primeras 5 palabras de la lista mezclada
+    std::vector<std::string> selectedWords(wordList.begin(), wordList.begin() + 5);
+
+    // Abrir el archivo de salida
+    std::ofstream outputFile("Juego.txt");
+    if (!outputFile.is_open())
+    {
+        std::cout << "No se pudo abrir el archivo de salida." << std::endl;
+        return -1;
+    }
+
+    // Escribir las palabras seleccionadas en el archivo de salida
+    for (const auto& selectedWord : selectedWords)
+    {
+        outputFile << selectedWord << std::endl;
+    }
+
+    // Cerrar el archivo de salida
+    outputFile.close();
+
+
+    //////////////////////////////////////////////////////////////////////////////7
+
     std::ifstream archivo("Juego.txt");
     std::string palabra;
     std::vector<std::string> palabras;
