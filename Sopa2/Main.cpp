@@ -27,22 +27,27 @@ int main()
         return -1;
     }
 
-    sf::RenderWindow window(sf::VideoMode(GRID_SIZE * 50, GRID_SIZE * 40), "Sopa de letras"); // Crea una ventana para abrir
+    sf::RenderWindow window(sf::VideoMode(GRID_SIZE * 71, GRID_SIZE * 40), "Sopa de letras"); // Crea una ventana para abrir
 
     initializeGrid(window);
 
     vector<string> wordList = readFile("SopaPalabras.txt");
-    if (wordList.size() < 5)
+    if (wordList.size() < 6)
     {
         cout << "La lista de palabras no contiene suficientes elementos." << endl;
         return -1;
     }
 
     random_shuffle(wordList.begin(), wordList.end());
-    vector<string> selectedWords(wordList.begin(), wordList.begin() + 5);
+    vector<string> selectedWords(wordList.begin(), wordList.begin() + 6);
     writeFile("Juego.txt", selectedWords);
 
     vector<string> palabras = readFile("Juego.txt");
+    std::string textoColumna1;
+    std::string textoColumna2;
+
+
+//
 
     lectura();
 
@@ -51,14 +56,24 @@ int main()
     columna1.setPosition(0, 0);
 
     sf::RectangleShape columna2(sf::Vector2f(534, 600));
-    columna2.setFillColor(sf::Color::Black);
+    columna2.setFillColor(sf::Color(128, 128, 128));
     columna2.setPosition(266, 0);
 
-    sf::Text texto;
-    texto.setFont(font);
-    texto.setCharacterSize(20);
-    texto.setFillColor(sf::Color::Black);
-    texto.setStyle(sf::Text::Regular);
+    sf::RectangleShape columna3(sf::Vector2f(802, 600));
+    columna3.setFillColor(sf::Color::Black);
+    columna3.setPosition(532, 0);
+
+    sf::Text texto1;
+    texto1.setFont(font);
+    texto1.setCharacterSize(20);
+    texto1.setFillColor(sf::Color::Black);
+    texto1.setStyle(sf::Text::Regular);
+
+    sf::Text texto2;
+    texto2.setFont(font);
+    texto2.setCharacterSize(20);
+    texto2.setFillColor(sf::Color::Black);
+    texto2.setStyle(sf::Text::Regular);
 
     sf::Text pala;
     pala.setFont(font);
@@ -66,19 +81,40 @@ int main()
     pala.setFillColor(sf::Color::Black);
     pala.setStyle(sf::Text::Bold);
 
+    sf::Text pala2;
+    pala2.setFont(font);
+    pala2.setCharacterSize(20);
+    pala2.setFillColor(sf::Color::Black);
+    pala2.setStyle(sf::Text::Bold);
     window.clear(sf::Color::White);
-
+    /*
     std::string textoLista;
     for (const std::string &palabra : palabras)
     {
         textoLista += palabra + "\n";
     }
+*/
+    for (int i = 0; i < 3; ++i) {
+        if (i < palabras.size()) {
+            textoColumna1 += palabras[i] + "\n";
+        }
+    }
 
-    texto.setString(textoLista);
-    texto.setPosition(2, 30);
+    for (int i = 3; i < 6; ++i) {
+        if (i < palabras.size()) {
+            textoColumna2 += palabras[i] + "\n";
+        }
+    }
 
-    pala.setString("Palabras a buscar:");
-    pala.setPosition(90 - pala.getGlobalBounds().width / 2, 10 - pala.getGlobalBounds().height / 2);
+    texto1.setString(textoColumna1);
+    texto1.setPosition(2, 60);
+    texto2.setString(textoColumna2);
+    texto2.setPosition(270, 60);
+
+    pala.setString(" Jugador 1 \n Palabras a buscar:");
+    pala.setPosition(90 - pala.getGlobalBounds().width / 2, 25 - pala.getGlobalBounds().height / 2);
+    pala2.setString(" Jugador 2 \n Palabras a buscar:");
+    pala2.setPosition(360 - pala.getGlobalBounds().width / 2, 25 - pala.getGlobalBounds().height / 2);
 
     while (window.isOpen())
     {
@@ -93,7 +129,7 @@ int main()
 
         window.clear(sf::Color::White);
 
-        mostrarPalabras(window, columna1, columna2, texto, pala);
+        mostrarPalabras(window, columna1, columna2, columna3, texto1, texto2, pala, pala2);
 
         for (int i = 0; i < GRID_SIZE; i++)
         {

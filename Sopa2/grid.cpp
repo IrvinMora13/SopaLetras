@@ -11,7 +11,7 @@ void initializeGrid(sf::RenderWindow &window)
             grid[i][j].setFont(font);
             grid[i][j].setCharacterSize(25);
             grid[i][j].setFillColor(sf::Color::White);
-            grid[i][j].setPosition(window.getSize().x - GRID_SIZE * 30 + j * 30, i * 30);
+            grid[i][j].setPosition(window.getSize().x - GRID_SIZE * 33 + j * 33, i * 33);
 
             char randomLetter = 'A' + rand() % 26;
             grid[i][j].setString(randomLetter);
@@ -19,5 +19,3 @@ void initializeGrid(sf::RenderWindow &window)
     }
 
 }
-
-
