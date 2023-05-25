@@ -87,6 +87,17 @@ void player1(){
     textoBoton.setCharacterSize(20);
     textoBoton.setFillColor(sf::Color::Black);
     textoBoton.setPosition(boton.getPosition().x + 10, boton.getPosition().y + 10);  // coloca el texto dentro del bot�n
+    //Boton Buscar
+    sf::RectangleShape buscar1(sf::Vector2f(100, 50));
+    buscar1.setFillColor(sf::Color::Red);
+    buscar1.setPosition(window.getSize().x - 900, window.getSize().y - 60);
+    //Texto Buscar
+    sf::Text textoBuscar1;
+    textoBuscar1.setFont(font);
+    textoBuscar1.setString("Buscar");
+    textoBuscar1.setCharacterSize(20);
+    textoBuscar1.setFillColor(sf::Color::White);
+    textoBuscar1.setPosition(buscar1.getPosition().x + 20, buscar1.getPosition().y + 10);
     //Reloj
     sf::Clock reloj;
     float tiempoRestante = 60.0f;
@@ -104,6 +115,7 @@ void player1(){
     pala.setPosition(90 - pala.getGlobalBounds().width / 2, 25 - pala.getGlobalBounds().height / 2);
     //Constantes
     string palabraActual;
+    inicializarHash();
     while (window.isOpen())
     {
         float tiempoTranscurrido = reloj.getElapsedTime().asSeconds();
@@ -158,6 +170,27 @@ void player1(){
                     initializeGrid(window);
                 }
             }
+            if (event.type == sf::Event::MouseButtonPressed) {
+                sf::Vector2i position1 = sf::Mouse::getPosition(window);
+                // Comprueba si se hizo clic en el boton de buscar1
+                if (position1.x >= buscar1.getPosition().x && position1.x <= buscar1.getPosition().x + buscar1.getSize().x &&
+                    position1.y >= buscar1.getPosition().y && position1.y <= buscar1.getPosition().y + buscar1.getSize().y){
+                        if (buscarTrie(palabraActual)){
+                            cout << "¡Palabra encontrada!"<<endl;
+                            if(!buscarHash(palabraActual)){
+                                insertarHash(palabraActual, palabraActual);
+                                cout << "¡Palabra insertada!"<<endl;
+                            }
+                        }else{
+                            cout<<"No existe"<<endl;
+                        }
+                        for (int i = 0; i < GRID_SIZE; i++) {
+                            for (int j = 0; j < GRID_SIZE; j++) {
+                                    grid[i][j].setFillColor(sf::Color::White);
+                            }
+                        }
+                    }
+                }
             if (event.type == sf::Event::MouseButtonPressed){
                 // obt�n la posici�n del clic
                 sf::Vector2i position = sf::Mouse::getPosition(window);
@@ -200,8 +233,11 @@ void player1(){
         mostrarPalabras1(window, columna1, columna3, texto1, pala);
         textoTiempo.setString("Tiempo restante: " + std::to_string(static_cast<int>(tiempoRestante)));
         window.draw(textoTiempo);
+        window.draw(buscar1);
+        window.draw(textoBuscar1);
         window.draw(boton);
         window.draw(textoBoton);
+
         for (int i = 0; i < GRID_SIZE; i++)
         {
             for (int j = 0; j < GRID_SIZE; j++)
@@ -282,6 +318,17 @@ void player2(){
     textoBoton.setCharacterSize(20);
     textoBoton.setFillColor(sf::Color::Black);
     textoBoton.setPosition(boton.getPosition().x + 10, boton.getPosition().y + 10);  // coloca el texto dentro del bot�n
+    //Boton Buscar2
+    sf::RectangleShape buscar2(sf::Vector2f(100, 50));
+    buscar2.setFillColor(sf::Color::Red);
+    buscar2.setPosition(window.getSize().x - 900, window.getSize().y - 60);
+    //Texto Buscar
+    sf::Text textoBuscar2;
+    textoBuscar2.setFont(font);
+    textoBuscar2.setString("Buscar");
+    textoBuscar2.setCharacterSize(20);
+    textoBuscar2.setFillColor(sf::Color::White);
+    textoBuscar2.setPosition(buscar2.getPosition().x + 20, buscar2.getPosition().y + 10);
     //Reloj
     sf::Clock reloj;
     float tiempoRestante = 60.0f;
@@ -304,6 +351,7 @@ void player2(){
     //Constantes
     string palabraActual;
     bool turnoJugador1 = true;
+    inicializarHash();
      while (window.isOpen())
     {
         float tiempoTranscurrido = reloj.getElapsedTime().asSeconds();
@@ -319,9 +367,10 @@ void player2(){
             }
             if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i position = sf::Mouse::getPosition(window);
-                // Comprueba si se hizo clic en el bot�n de reinicio
+                // Comprueba si se hizo clic en el boton de reinicio
                 if (position.x >= boton.getPosition().x && position.x <= boton.getPosition().x + boton.getSize().x &&
                     position.y >= boton.getPosition().y && position.y <= boton.getPosition().y + boton.getSize().y) {
+
                     // Reinicia el juego aqu�
                     lastX = -1;
                     lastY = -1;
@@ -365,13 +414,34 @@ void player2(){
                     initializeGrid(window);
                 }
             }
+            if (event.type == sf::Event::MouseButtonPressed) {
+                sf::Vector2i position2 = sf::Mouse::getPosition(window);
+                // Comprueba si se hizo clic en el bot�n de buscar2
+                if (position2.x >= buscar2.getPosition().x && position2.x <= buscar2.getPosition().x + buscar2.getSize().x &&
+                    position2.y >= buscar2.getPosition().y && position2.y <= buscar2.getPosition().y + buscar2.getSize().y){
+                        if (buscarTrie(palabraActual)){
+                            cout << "¡Palabra encontrada!"<<endl;
+                            if(!buscarHash(palabraActual)){
+                                insertarHash(palabraActual, palabraActual);
+                                cout << "¡Palabra insertada!"<<endl;
+                            }else{
+                                cout << "¡Palabra ya se encuentra en el hash!"<<endl;
+                            }
+
+                        }else{
+                            cout<<"No existe"<<endl;
+                        }
+
+
+                    }
+                }
             if (event.type == sf::Event::MouseButtonPressed){
-                // obt�n la posici�n del clic
+                // obt�n la posicion del clic
                 sf::Vector2i position = sf::Mouse::getPosition(window);
-                // calcula en qu� celda de la cuadr�cula se hizo clic
+                // calcula en que celda de la cuadr�cula se hizo clic
                 int gridX = (position.x - (window.getSize().x - GRID_SIZE * 33)) / 33;  // se ajusta a la escala de 33x33
                 int gridY = position.y / 33;
-                // verifica que el clic fue dentro de la cuadr�cula
+                // verifica que el clic fue dentro de la cuadricula
                 if (gridX >= 0 && gridX < GRID_SIZE && gridY >= 0 && gridY < GRID_SIZE)
                 {
                     if (esMovimientoValido(gridX, gridY)) {
@@ -432,6 +502,10 @@ void player2(){
         window.draw(textoTurno);
         window.draw(boton);
         window.draw(textoBoton);
+        window.draw(buscar2);
+        window.draw(textoBuscar2);
+        //window.draw(textoBuscar2);
+
         for (int i = 0; i < GRID_SIZE; i++)
         {
             for (int j = 0; j < GRID_SIZE; j++)
