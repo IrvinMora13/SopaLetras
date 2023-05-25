@@ -24,6 +24,7 @@ int lastX = -1, lastY = -1;
 int directionX = 0, directionY = 0;
 bool selectingWord = false;
 
+
 int main()
 {
     if (!font.loadFromFile("arial.ttf")) // Obtiene el tipo de letra a usar
@@ -44,7 +45,7 @@ int main()
         menuWindow.getSize().y / static_cast<float>(backgroundTexture.getSize().y));
     // Botones del Menu
     sf::RectangleShape singlePlayerButton(sf::Vector2f(200, 100));
-    singlePlayerButton.setPosition(400, 200); // posiciona el botón en el centro de la pantalla
+    singlePlayerButton.setPosition(400, 100); // posiciona el botón en el centro de la pantalla
     sf::RectangleShape twoPlayerButton(sf::Vector2f(200, 100));
     twoPlayerButton.setPosition(400, 400); // posiciona el botón en el centro de la pantalla
     // Numero de jugadores 1

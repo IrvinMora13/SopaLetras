@@ -97,7 +97,7 @@ vector<string> lectura()
     return palabras;
 }
 
-void SeleccionarPalabras()
+void SeleccionarPalabras(int jugadores)
 {
     ifstream palabras;
     string texto;
@@ -126,11 +126,18 @@ void SeleccionarPalabras()
     {
         palabras >> texto;
     }
-
-    for (int i = 0; i < 6 && palabras >> texto; i++)
-    {
-        palabras_seleccionadas.push_back(texto);
+    if(jugadores == 2){
+        for (int i = 0; i < 6 && palabras >> texto; i++)
+        {
+            palabras_seleccionadas.push_back(texto);
+        }
+    }else{
+       for (int i = 0; i < 3 && palabras >> texto; i++)
+        {
+            palabras_seleccionadas.push_back(texto);
+        }
     }
+
 
     // Mezcla las palabras seleccionadas.
     std::random_shuffle(palabras_seleccionadas.begin(), palabras_seleccionadas.end());

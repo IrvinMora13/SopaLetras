@@ -36,11 +36,19 @@ char ObtenerLetras(int x, int y) {
     return grid[y][x].getString()[0];
 }
 
+void comenzar();
+void insertarPalabra(string palabra);
+bool compureba_espacio(string palabra,int caso, int x, int y);
+int numero_aleatorio();
+
 void player1(){
-    sf::RenderWindow window(sf::VideoMode(GRID_SIZE * 71, GRID_SIZE * 40), "Sopa de letras"); // Crea una ventana para abrir
+    sf::RenderWindow window(sf::VideoMode(GRID_SIZE * 71, GRID_SIZE * 40), "Sopa de letras");// Crea una ventana para abrir
+    //Crear matriz vac√≠a e insertar las palabras para despu√©s rellenarla con letras aleatorias
+    SeleccionarPalabras(1);
+    comenzar();
     initializeGrid(window);
     string textoColumna1;
-    SeleccionarPalabras();
+
     vector<string> palabras = lectura();
     //Columna jugador 1
     sf::RectangleShape columna1(sf::Vector2f(266, 600));
@@ -71,14 +79,14 @@ void player1(){
     //Boton Reiniciar
     sf::RectangleShape boton(sf::Vector2f(100, 50));  // cambia las dimensiones si es necesario
     boton.setFillColor(sf::Color::White);
-    boton.setPosition(window.getSize().x - 110, window.getSize().y - 60); // posiciona el botÛn en la esquina inferior derecha
+    boton.setPosition(window.getSize().x - 110, window.getSize().y - 60); // posiciona el botÔøΩn en la esquina inferior derecha
     //Texton reiniciar
     sf::Text textoBoton;
     textoBoton.setFont(font);
     textoBoton.setString("Reiniciar");
     textoBoton.setCharacterSize(20);
     textoBoton.setFillColor(sf::Color::Black);
-    textoBoton.setPosition(boton.getPosition().x + 10, boton.getPosition().y + 10);  // coloca el texto dentro del botÛn
+    textoBoton.setPosition(boton.getPosition().x + 10, boton.getPosition().y + 10);  // coloca el texto dentro del botÔøΩn
     //Reloj
     sf::Clock reloj;
     float tiempoRestante = 60.0f;
@@ -111,24 +119,31 @@ void player1(){
             }
             if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i position = sf::Mouse::getPosition(window);
-                // Comprueba si se hizo clic en el botÛn de reinicio
+                // Comprueba si se hizo clic en el botÔøΩn de reinicio
                 if (position.x >= boton.getPosition().x && position.x <= boton.getPosition().x + boton.getSize().x &&
                     position.y >= boton.getPosition().y && position.y <= boton.getPosition().y + boton.getSize().y) {
-                    // Reinicia el juego aquÌ
+                    // Reinicia el juego aquÔøΩ
                     lastX = -1;
                     lastY = -1;
                     directionX = 0;
                     directionY = 0;
                     selectingWord = false;
                     palabraActual.clear();
-                    // Restablecer colores de la cuadrÌcula
+                    // Restablecer colores de la cuadrÔøΩcula
                     for (int i = 0; i < GRID_SIZE; i++) {
                         for (int j = 0; j < GRID_SIZE; j++) {
                             grid[i][j].setFillColor(sf::Color::White);
                         }
                     }
+                    for (int i = 0; i < GRID_SIZE; i++) {
+                        for (int j = 0; j < GRID_SIZE; j++) {
+                            grid[i][j].setString(" ");
+                        }
+                    }
                     //Reiniciar palabras
-                    SeleccionarPalabras();
+                    SeleccionarPalabras(1);
+                    comenzar();
+                    initializeGrid(window);
                     palabras = lectura();
                     textoColumna1.clear();
                     for (int i = 0; i < 3; ++i) {
@@ -144,12 +159,12 @@ void player1(){
                 }
             }
             if (event.type == sf::Event::MouseButtonPressed){
-                // obtÈn la posiciÛn del clic
+                // obtÔøΩn la posiciÔøΩn del clic
                 sf::Vector2i position = sf::Mouse::getPosition(window);
-                // calcula en quÈ celda de la cuadrÌcula se hizo clic
+                // calcula en quÔøΩ celda de la cuadrÔøΩcula se hizo clic
                 int gridX = (position.x - (window.getSize().x - GRID_SIZE * 33)) / 33;  // se ajusta a la escala de 33x33
                 int gridY = position.y / 33;
-                // verifica que el clic fue dentro de la cuadrÌcula
+                // verifica que el clic fue dentro de la cuadrÔøΩcula
                 if (gridX >= 0 && gridX < GRID_SIZE && gridY >= 0 && gridY < GRID_SIZE)
                 {
                     if (esMovimientoValido(gridX, gridY)) {
@@ -201,10 +216,11 @@ void player1(){
 
 void player2(){
     sf::RenderWindow window(sf::VideoMode(GRID_SIZE * 71, GRID_SIZE * 40), "Sopa de letras"); // Crea una ventana para abrir
+    SeleccionarPalabras(2);
+    comenzar();
     initializeGrid(window); // Inicializa la matriz
     string textoColumna1;
     string textoColumna2;
-    SeleccionarPalabras();
     vector<string> palabras = lectura();
     //Columna jugador 1
     sf::RectangleShape columna1(sf::Vector2f(266, 600));
@@ -258,14 +274,14 @@ void player2(){
     //Boton Reiniciar
     sf::RectangleShape boton(sf::Vector2f(100, 50));  // cambia las dimensiones si es necesario
     boton.setFillColor(sf::Color::White);
-    boton.setPosition(window.getSize().x - 110, window.getSize().y - 60); // posiciona el botÛn en la esquina inferior derecha
-    //Texton reiniciar
+    boton.setPosition(window.getSize().x - 110, window.getSize().y - 60); // posiciona el botÔøΩn en la esquina inferior derecha
+    //Texto reiniciar
     sf::Text textoBoton;
     textoBoton.setFont(font);
     textoBoton.setString("Reiniciar");
     textoBoton.setCharacterSize(20);
     textoBoton.setFillColor(sf::Color::Black);
-    textoBoton.setPosition(boton.getPosition().x + 10, boton.getPosition().y + 10);  // coloca el texto dentro del botÛn
+    textoBoton.setPosition(boton.getPosition().x + 10, boton.getPosition().y + 10);  // coloca el texto dentro del botÔøΩn
     //Reloj
     sf::Clock reloj;
     float tiempoRestante = 60.0f;
@@ -303,24 +319,31 @@ void player2(){
             }
             if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i position = sf::Mouse::getPosition(window);
-                // Comprueba si se hizo clic en el botÛn de reinicio
+                // Comprueba si se hizo clic en el botÔøΩn de reinicio
                 if (position.x >= boton.getPosition().x && position.x <= boton.getPosition().x + boton.getSize().x &&
                     position.y >= boton.getPosition().y && position.y <= boton.getPosition().y + boton.getSize().y) {
-                    // Reinicia el juego aquÌ
+                    // Reinicia el juego aquÔøΩ
                     lastX = -1;
                     lastY = -1;
                     directionX = 0;
                     directionY = 0;
                     selectingWord = false;
                     palabraActual.clear();
-                    // Restablecer colores de la cuadrÌcula
+                    // Restablecer colores de la cuadrÔøΩcula
                     for (int i = 0; i < GRID_SIZE; i++) {
                         for (int j = 0; j < GRID_SIZE; j++) {
                             grid[i][j].setFillColor(sf::Color::White);
                         }
                     }
+                    for (int i = 0; i < GRID_SIZE; i++) {
+                        for (int j = 0; j < GRID_SIZE; j++) {
+                            grid[i][j].setString(" ");
+                        }
+                    }
                     //Reiniciar palabras
-                    SeleccionarPalabras();
+                    SeleccionarPalabras(2);
+                    comenzar();
+                    initializeGrid(window);
                     palabras = lectura();
                     textoColumna1.clear();
                     textoColumna2.clear();
@@ -343,12 +366,12 @@ void player2(){
                 }
             }
             if (event.type == sf::Event::MouseButtonPressed){
-                // obtÈn la posiciÛn del clic
+                // obtÔøΩn la posiciÔøΩn del clic
                 sf::Vector2i position = sf::Mouse::getPosition(window);
-                // calcula en quÈ celda de la cuadrÌcula se hizo clic
+                // calcula en quÔøΩ celda de la cuadrÔøΩcula se hizo clic
                 int gridX = (position.x - (window.getSize().x - GRID_SIZE * 33)) / 33;  // se ajusta a la escala de 33x33
                 int gridY = position.y / 33;
-                // verifica que el clic fue dentro de la cuadrÌcula
+                // verifica que el clic fue dentro de la cuadrÔøΩcula
                 if (gridX >= 0 && gridX < GRID_SIZE && gridY >= 0 && gridY < GRID_SIZE)
                 {
                     if (esMovimientoValido(gridX, gridY)) {
@@ -421,4 +444,266 @@ void player2(){
     }
 }
 
+void comenzar(){
+ifstream juego("Juego.txt");
+    string palabra;
+    if(juego.fail()){            // Por si falla el archivo al abrir
+        cout<<"Error 501";
+        exit(1);
+    }
+    for (int i = 0; i < GRID_SIZE; i++){
+        for (int j = 0; j < GRID_SIZE; j++){
+            grid[i][j].setString(" ");
+        }
+    }
 
+    while (juego >> palabra) { //Almacena el numero de plabras que existen en un archivo
+        insertarPalabra(palabra);
+    }
+}
+
+void insertarPalabra(string palabra){
+    int x,y,opc = 1,ex = 0, caso = 1;
+    x = numero_aleatorio();
+    y = numero_aleatorio();
+    int continuarY = y;
+    int continuarX= x;
+    char letra;
+
+    do{
+        switch(opc){
+			case 1:
+                    if(compureba_espacio(palabra,caso, x, y)){
+                        for (int i = 0; i < palabra.length(); ++i) {
+                            if((continuarY + palabra.length()) < GRID_SIZE){
+                                letra=palabra[i];
+                                grid[x][y + i].setString(letra);
+                            }
+
+                        }
+                        ex = 1;
+                    }
+                    else{
+                        caso += 1;
+                        opc += 1;
+                    }
+				break;
+            case 2:
+                    if(compureba_espacio(palabra,caso, x, y)){
+                        for (int i = 0; i < palabra.length(); ++i) {
+                            if((continuarY + palabra.length() && (continuarX + palabra.length()) < GRID_SIZE) < GRID_SIZE){
+                                letra=palabra[i];
+                                grid[x + i][y + i].setString(letra);
+                            }
+
+                        }
+                        ex = 1;
+                    }
+                    else{
+                        caso += 1;
+                        opc += 1;
+                    }
+
+                break;
+            case 3:
+                    if(compureba_espacio(palabra,caso, x, y)){
+                        for (int i = 0; i < palabra.length(); ++i) {
+                            if((continuarX + palabra.length()) < GRID_SIZE){
+                                letra=palabra[i];
+                                grid[x + i][y].setString(letra);
+                            }
+                        }
+                        ex = 1;
+                    }
+                    else{
+                        caso += 1;
+                        opc += 1;
+                    }
+                break;
+            case 4:
+                    if(compureba_espacio(palabra,caso, x, y)){
+                        for (int i = 0; i < palabra.length(); ++i) {
+                            if((continuarX + palabra.length()) < GRID_SIZE && (continuarY - palabra.length()) > 0){
+                                letra=palabra[i];
+                                grid[x + i][y - i].setString(letra);
+                            }
+                        }
+                        ex = 1;
+                    }
+                    else{
+                        caso += 1;
+                        opc += 1;
+                    }
+                break;
+            case 5:
+                    if(compureba_espacio(palabra,caso, x, y)){
+                        for (int i = 0; i < palabra.length(); ++i) {
+                            if((continuarY - palabra.length()) >0){
+                            letra=palabra[i];
+                            grid[x][y - i].setString(letra);
+                            }
+                        }
+                        ex = 1;
+                    }
+                    else{
+                        caso += 1;
+                        opc += 1;
+                    }
+                break;
+            case 6:
+                    if(compureba_espacio(palabra,caso, x, y)){
+                        for (int i = 0; i < palabra.length(); ++i) {
+                            if((continuarX - palabra.length()) > 0){
+                            letra=palabra[i];
+                            grid[x - i][y].setString(letra);
+                            }
+                        }
+                        ex = 1;
+                    }
+                    else{
+                        caso += 1;
+                        opc += 1;
+                    }
+                break;
+            case 7:
+                    if(compureba_espacio(palabra,caso, x, y)){
+                        for (int i = 0; i < palabra.length(); ++i) {
+                            if((continuarX - palabra.length()) > 0 && (continuarY - palabra.length()) > 0){
+                            letra=palabra[i];
+                            grid[x - i][y - i].setString(letra);
+                            }
+                        }
+                        ex = 1;
+                    }
+                    else{
+                        x = numero_aleatorio();
+                        y = numero_aleatorio();
+                        opc = 1;
+                        ex=1;
+                    }
+                break;
+		}
+
+    }
+    while(ex != 1);
+
+}
+
+bool compureba_espacio(string palabra,int caso, int x, int y){
+    int contador = 0;
+    switch(caso){
+			case 1:
+                    for (int i = 0; i < palabra.length(); ++i) {
+                        if (grid[x][y].getString().toAnsiString() == " "){
+                            y += 1;
+                            contador +=1;
+                        }
+                        else{
+                            contador = 0;
+                            return false;
+                        }
+                    }
+
+				break;
+            case 2:
+                    for (int i = 0; i < palabra.length(); ++i) {
+                        if (grid[x][y].getString().toAnsiString() == " ") {
+                            y += 1;
+                            x += 1;
+                            contador +=1;
+                        }
+                        else{
+                            contador = 0;
+                            return false;
+                        }
+                    }
+                break;
+            case 3:
+                    for (int i = 0; i < palabra.length(); ++i) {
+                        if (grid[x][y].getString().toAnsiString() == " ") {
+                            x += 1;
+                            contador +=1;
+                        }
+                        else{
+                            contador = 0;
+                            return false;
+                        }
+                    }
+                break;
+            case 4:
+                    for (int i = 0; i < palabra.length(); ++i) {
+                        if (grid[x][y].getString().toAnsiString() == " ") {
+                            y -= 1;
+                            x += 1;
+                            contador +=1;
+                        }
+                        else{
+                            contador = 0;
+                            return false;
+                        }
+                    }
+                break;
+            case 5:
+                    for (int i = 0; i < palabra.length(); ++i) {
+                        if (grid[x][y].getString().toAnsiString() == " ") {
+                            y -= 1;
+                            contador +=1;
+                        }
+                        else{
+                            contador = 0;
+                            return false;
+                        }
+                    }
+                break;
+            case 6:
+                    for (int i = 0; i < palabra.length(); ++i) {
+                        if (grid[x][y].getString().toAnsiString() == " ") {
+                            y -= 1;
+                            x -= 1;
+                            contador +=1;
+                        }
+                        else{
+                            contador = 0;
+                            return false;
+                        }
+                    }
+                break;
+            case 7:
+                    for (int i = 0; i < palabra.length(); ++i) {
+                        if (grid[x][y].getString().toAnsiString() == " ") {
+                            x -= 1;
+                            contador +=1;
+                        }
+                        else{
+                            contador = 0;
+                            return false;
+                        }
+                    }
+                break;
+            case 8:
+                    for (int i = 0; i < palabra.length(); ++i) {
+                        if (grid[x][y].getString().toAnsiString() == " ") {
+                            y += 1;
+                            x -= 1;
+                            contador +=1;
+                        }
+                        else{
+                            contador = 0;
+                            return false;
+                        }
+                    }
+                break;
+	}
+
+    if(contador == palabra.length()){
+        return true;
+    }
+
+    return false;
+}
+
+int numero_aleatorio(){
+    int ale;
+    ale = rand() % 15 + 1;
+    return ale;
+}

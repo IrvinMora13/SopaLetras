@@ -19,6 +19,6 @@ void insertarTrie(const string &palabra);
 bool buscarTrie(const string &palabra);
 void eliminarTrie(const string &palabra);
 vector<string> lectura();
-void SeleccionarPalabras();
+void SeleccionarPalabras(int jugadores);
 
 #endif
